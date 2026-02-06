@@ -155,4 +155,4 @@ class Predictor(nn.Module):
 
 
                         # (B, 192, N)
-        return x  # 192-dim embedding per position
+        return x
