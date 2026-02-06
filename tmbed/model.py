@@ -88,7 +88,7 @@ class CNN(nn.Module):
     def __init__(self, channels):
         super().__init__()
 
-        self.input = Conv(1024, channels, 1, 1, 0)
+        self.input = Conv(1280, channels, 1, 1, 0) #incfold - update input conv to receive ESM output
 
         self.dwc1 = Conv(channels, channels, 9, 1, 4, groups=channels)
         self.dwc2 = Conv(channels, channels, 21, 1, 10, groups=channels)
