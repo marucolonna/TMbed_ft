@@ -134,14 +134,25 @@ class Predictor(nn.Module):
 
         x = x.transpose(1, 2).view(B, C, N, 1)
 
-        x = self.model(x, mask)
+        x = self.model.input(x, mask)         # (B, 64, N, 1) - incfold
+        z1 = self.model.dwc1(x, mask)         # (B, 64, N, 1) - incfold
+        z2 = self.model.dwc2(x, mask)         # (B, 64, N, 1) - incfold
+    
+        x = torch.cat([x, z1, z2], dim=1)     # (B, 192, N, 1) - incfold
+        x = self.model.dropout(x) #incfold
+    
+        x = x.view(B, 192, N) #incfold
 
-        x = x.view(B, 5, N)
+        #x = self.model(x, mask)
 
-        x = F.pad(x, pad=(3, 3), mode='constant', value=0.0)
+        #x = x.view(B, 5, N)
 
-        x = x.unfold(dimension=2, size=7, step=1)
+        #x = F.pad(x, pad=(3, 3), mode='constant', value=0.0)
 
-        x = torch.einsum('bcnm,m->bcn', x, self.filter_kernel)
+        #x = x.unfold(dimension=2, size=7, step=1)
 
-        return x
+        #x = torch.einsum('bcnm,m->bcn', x, self.filter_kernel)
+
+
+                        # (B, 192, N)
+        return x  # 192-dim embedding per position
