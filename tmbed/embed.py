@@ -82,14 +82,14 @@ class T5Encoder:
     def embed(self, sequences):
         sequences = [s.upper().translate(self.aa_map) for s in sequences]
 
-        tokens = [' '.join(list(s)) for s in sequences]
+        tokens = [' '.join(list(s)) for s in sequences] 
         tokens = self.tokenizer.batch_encode_plus(tokens,
                                                   padding='longest',
-                                                  add_special_tokens=True)
+                                                  add_special_tokens=True) 
 
         device = self.encoder_model.device
-        input_ids = torch.tensor(tokens['input_ids'], device=device)
-        attention_mask = torch.tensor(tokens['attention_mask'], device=device)
+        input_ids = torch.tensor(tokens['input_ids'], device=device) 
+        attention_mask = torch.tensor(tokens['attention_mask'], device=device) 
 
         embeddings = self.encoder_model(input_ids=input_ids,
                                         attention_mask=attention_mask)
