@@ -85,10 +85,12 @@ class T5Encoder:
         tokens = [' '.join(list(s)) for s in sequences] 
         tokens = self.tokenizer.batch_encode_plus(tokens,
                                                   padding='longest',
-                                                  add_special_tokens=True) 
-
+                                                  add_special_tokens=True)
+        
+        toks = torch.tensor(tokens['input_ids'])
+        toks = toks[:, :1022] #incfold - truncating input to match ESM max input length
         device = self.encoder_model.device
-        input_ids = torch.tensor(tokens['input_ids'], device=device) 
+        input_ids = torch.tensor(toks, device=device) 
         attention_mask = torch.tensor(tokens['attention_mask'], device=device) 
 
         embeddings = self.encoder_model(input_ids=input_ids,
