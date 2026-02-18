@@ -89,6 +89,7 @@ class T5Encoder:
         
         toks = torch.tensor(tokens['input_ids'])
         toks = toks[:, :1022] #incfold - truncating input to match ESM max input length
+        
         device = self.encoder_model.device
         input_ids = torch.tensor(toks, device=device) 
         attention_mask = torch.tensor(tokens['attention_mask'], device=device) 
