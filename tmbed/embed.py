@@ -95,5 +95,8 @@ class T5Encoder:
 
         embeddings = self.encoder_model(input_ids=input_ids,
                                         attention_mask=attention_mask)
+        
+        first_seq_tokens = input_ids[0] #incfold - for debugging
+        decoded = [self.tokenizer.decode([tid]) for tid in first_seq_tokens] #incfold - for debugging
 
-        return embeddings.last_hidden_state
+        return embeddings.last_hidden_state, first_seq_tokens, decoded
