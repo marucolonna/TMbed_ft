@@ -88,7 +88,7 @@ class T5Encoder:
                                                   add_special_tokens=True)
         
         toks = torch.tensor(tokens['input_ids'])
-        toks = toks[:, :1022] #incfold - truncating input to match ESM max input length
+        #toks = toks[:, :1022] #incfold - truncating input to match ESM max input length
         
         device = self.encoder_model.device
         input_ids = torch.tensor(toks, device=device) 
@@ -96,8 +96,5 @@ class T5Encoder:
 
         embeddings = self.encoder_model(input_ids=input_ids,
                                         attention_mask=attention_mask)
-        
-        first_seq_tokens = input_ids[0] #incfold - for debugging
-        decoded = [self.tokenizer.decode([tid]) for tid in first_seq_tokens] #incfold - for debugging
 
-        return embeddings.last_hidden_state, first_seq_tokens, decoded, input_ids
+        return embeddings.last_hidden_state
